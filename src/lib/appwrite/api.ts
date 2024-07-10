@@ -3,6 +3,7 @@ import { ID, Query } from "appwrite";
 import { account, appwriteConfig, avatars, databases } from "./config";
 
 export async function createUserAccount(user: INewUser) {
+
   try {
     const newAccount = await account.create(
       ID.unique(),
@@ -23,7 +24,7 @@ export async function createUserAccount(user: INewUser) {
       imageUrl: avatarUrl,
     })
 
-    return newAccount
+    return newUser
     } catch (error) {
       console.log(error);
       return error;
@@ -51,7 +52,7 @@ export async function saveUserToDB(user: {
   }
 }
 
-export async function signInAccount(user: { email: string; password: string;}) {
+export async function signInAccount(user: { email: string; password: string }) {
   try {
     const session = await account.createEmailPasswordSession(user.email, user.password);
 
@@ -62,6 +63,7 @@ export async function signInAccount(user: { email: string; password: string;}) {
 }
 
 export async function getCurrentUser() {
+
   try {
     const currentAccount = await account.get();
 
