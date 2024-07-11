@@ -35,12 +35,13 @@ const SigninForm = () => {
   })
 
   // 2. Define a submit handler.
-  async function handleSignin(values: z.infer<typeof SigninValidation>) {
+  async function onSubmit(values: z.infer<typeof SigninValidation>) {
 
     const session = await signInAccount({
       email: values.email,
       password: values.password,
     })
+
 
     if(!session) {
       return toast({ title: 'Sign in failed. Please try again'})
@@ -66,7 +67,7 @@ const SigninForm = () => {
         <h2 className="h3-bold md:h2-bold pt-5 sm:pt-12">Log in to your account</h2>
         <p className="text-light-3 small-medium md:base-regular mt-2">To use LinkXO, please enter your details</p>
 
-        <form onSubmit={form.handleSubmit(handleSignin)} className="flex flex-col gap-5 w-full mt-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5 w-full mt-4">
         <FormField
           control={form.control}
           name="email"
