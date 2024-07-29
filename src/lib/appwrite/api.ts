@@ -130,7 +130,7 @@ export async function createPost(post: INewPost) {
         tags: tags,
       }
     );
-
+    console.log(newPost)
     if (!newPost) {
       await deleteFile(uploadedFile.$id);
       throw Error;
@@ -165,6 +165,8 @@ export function getFilePreview(fileId: string) {
       fileId,
       2000,
       2000,
+      "top",
+      100,
     );
 
     if (!fileUrl) throw Error;
@@ -184,4 +186,16 @@ export async function deleteFile(fileId: string) {
   } catch (error) {
     console.log(error);
   }
+}
+
+// ============================== GET RECENT POSTS
+export async function getRecentPosts() {
+  const posts = await databases.listDocuments(
+    appwriteConfig.databaseId,
+    appwriteConfig.postCollectionId,
+    [Query.orderDesc('$createAt'), Query.limit(20)]
+  )
+
+  if(!posts) throw Error;
+  return posts;
 }
