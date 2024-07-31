@@ -1,5 +1,5 @@
 import { INewPost, INewUser } from "@/types";
-import { ID, Query } from "appwrite";
+import { ID, ImageGravity, Query } from "appwrite";
 import { account, appwriteConfig, avatars, databases, storage } from "./config";
 
 export async function createUserAccount(user: INewUser) {
@@ -130,7 +130,7 @@ export async function createPost(post: INewPost) {
         tags: tags,
       }
     );
-    console.log(newPost)
+
     if (!newPost) {
       await deleteFile(uploadedFile.$id);
       throw Error;
@@ -165,7 +165,7 @@ export function getFilePreview(fileId: string) {
       fileId,
       2000,
       2000,
-      "top",
+      "top" as ImageGravity,
       100,
     );
 
@@ -176,6 +176,7 @@ export function getFilePreview(fileId: string) {
     console.log(error);
   }
 }
+
 
 // ============================== DELETE FILE
 export async function deleteFile(fileId: string) {
@@ -193,7 +194,7 @@ export async function getRecentPosts() {
   const posts = await databases.listDocuments(
     appwriteConfig.databaseId,
     appwriteConfig.postCollectionId,
-    [Query.orderDesc('$createAt'), Query.limit(20)]
+    [Query.orderDesc('$createdAt'), Query.limit(20)]
   )
 
   if(!posts) throw Error;
