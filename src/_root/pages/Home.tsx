@@ -1,4 +1,5 @@
 import Loader from "@/components/ui/shared/Loader"
+import PostCard from "@/components/ui/shared/PostCard";
 import { useGetRecentPosts } from "@/lib/react-query/queriesAndMutation"
 import { Models } from "appwrite";
 

@@ -52,8 +52,8 @@ const PostForm = ({ post }: PostFormProps) => {
       toast({
         title: 'Please try again',
       })
-      navigate('/');
     }
+    navigate('/');
   }
 
   return (
