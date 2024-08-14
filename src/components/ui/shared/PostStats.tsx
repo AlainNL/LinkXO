@@ -1,4 +1,3 @@
-import { useUserContext } from "@/context/AuthContext";
 import { useDeleteSavedPost, useGetCurrentUser, useLikePost, useSavePost } from "@/lib/react-query/queriesAndMutation";
 import { checkIsLiked } from "@/lib/utils";
 import { Models } from "appwrite";
@@ -22,6 +21,13 @@ const PostStats = ({ post, userId }: PostStatsProps) => {
 
   const { data: currentUser } = useGetCurrentUser();
 
+
+  const savedPostRecord = currentUser?.save.find((record: Models.Document) => record.$id === post.$id)
+
+  useEffect(() => {
+    setIsSaved(!!savedPostRecord)
+  }, [currentUser])
+
   const handleLikePost = (e: React.MouseEvent) => {
     e.stopPropagation();
 
@@ -41,7 +47,6 @@ const PostStats = ({ post, userId }: PostStatsProps) => {
   const handleSavePost = (e: React.MouseEvent) => {
     e.stopPropagation();
 
-    const savedPostRecord = currentUser?.save.find((records: Models.Document) => records.$id === post.$id)
 
     if(savedPostRecord) {
       setIsSaved(false);
@@ -58,7 +63,7 @@ const PostStats = ({ post, userId }: PostStatsProps) => {
         <img
           src={checkIsLiked(likes, userId)
             ? "/assets/icons/liked.svg"
-            : "assets/icons/like.svg"
+            : "/assets/icons/like.svg"
           }
           alt="like"
           width={20}

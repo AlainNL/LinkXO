@@ -226,7 +226,7 @@ export async function savePost(postId: string, userId: string) {
   try {
     const updatedPost = await databases.createDocument(
       appwriteConfig.databaseId,
-      appwriteConfig.postCollectionId,
+      appwriteConfig.savesCollectionId,
       ID.unique(),
       {
         user: userId,
@@ -241,6 +241,8 @@ export async function savePost(postId: string, userId: string) {
     console.log(error);
   }
 }
+
+
 
 // ============================== DELETE SAVED POSTS
 export async function deleteSavedPost(saveRecordId: string) {
