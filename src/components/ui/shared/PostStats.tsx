@@ -1,6 +1,7 @@
 import { useDeleteSavedPost, useGetCurrentUser, useLikePost, useSavePost } from "@/lib/react-query/queriesAndMutation";
 import { checkIsLiked } from "@/lib/utils";
 import { Models } from "appwrite";
+import { Loader } from "lucide-react";
 import { useState, useEffect } from "react";
 
 
@@ -16,8 +17,8 @@ const PostStats = ({ post, userId }: PostStatsProps) => {
   const [isSaved, setIsSaved] = useState(false);
 
   const { mutate: likePost } = useLikePost();
-  const { mutate: savePost } = useSavePost();
-  const { mutate: deleteSavedPost } = useDeleteSavedPost();
+  const { mutate: savePost, isPending: isSavingPost } = useSavePost();
+  const { mutate: deleteSavedPost, isPending: isDeletingSaved } = useDeleteSavedPost();
 
   const { data: currentUser } = useGetCurrentUser();
 
@@ -46,8 +47,6 @@ const PostStats = ({ post, userId }: PostStatsProps) => {
 
   const handleSavePost = (e: React.MouseEvent) => {
     e.stopPropagation();
-
-
     if(savedPostRecord) {
       setIsSaved(false);
       deleteSavedPost(savedPostRecord.$id);
@@ -75,18 +74,17 @@ const PostStats = ({ post, userId }: PostStatsProps) => {
       </div>
 
       <div className="flex gap-2">
-        <img
+        {isSavingPost || isDeletingSaved ? <Loader /> : <img
           src={isSaved
             ? "/assets/icons/saved.svg"
             : "/assets/icons/save.svg"
           }
-          alt="like"
+          alt="share"
           width={20}
           height={20}
           onClick={handleSavePost}
           className="cursor-pointer"
-        />
-        <p className="small-medium lg:base-medium">0</p>
+        />}
       </div>
     </div>
   )
