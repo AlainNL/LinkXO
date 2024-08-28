@@ -6,12 +6,12 @@ import { useState, useEffect } from "react";
 
 
 type PostStatsProps = {
-  post: Models.Document;
+  post?: Models.Document;
   userId: string;
 }
 
 const PostStats = ({ post, userId }: PostStatsProps) => {
-  const likeList = post.likes.map((user: Models.Document) => user.$id);
+  const likeList = post?.likes.map((user: Models.Document) => user.$id);
 
   const [likes, setLikes] = useState(likeList);
   const [isSaved, setIsSaved] = useState(false);
@@ -42,7 +42,7 @@ const PostStats = ({ post, userId }: PostStatsProps) => {
       newLikes.push(userId);
     }
     setLikes(newLikes)
-    likePost({ postId: post.$id, likesArray: newLikes})
+    likePost({ postId: post?.$id || '', likesArray: newLikes})
   };
 
   const handleSavePost = (e: React.MouseEvent) => {
@@ -51,7 +51,7 @@ const PostStats = ({ post, userId }: PostStatsProps) => {
       setIsSaved(false);
       deleteSavedPost(savedPostRecord.$id);
     } else {
-    savePost({postId: post.$id, userId})
+    savePost({postId: post?.$id || '', userId})
     setIsSaved(true);
   }
 };
