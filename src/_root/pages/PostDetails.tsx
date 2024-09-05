@@ -2,18 +2,26 @@ import { Button } from '@/components/ui/button';
 import Loader from '@/components/ui/shared/Loader';
 import PostStats from '@/components/ui/shared/PostStats';
 import { useUserContext } from '@/context/AuthContext';
-import { useGetPostById } from '@/lib/react-query/queriesAndMutation'
+import { useDeletePost, useGetPostById } from '@/lib/react-query/queriesAndMutation'
 import { formatDate } from '@/lib/utils';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 const PostDetails = () => {
   const { id } = useParams();
   const { data: post, isPending } = useGetPostById(id || '');
   const { user } = useUserContext();
+  const { mutate: deletePost } = useDeletePost();
+  const navigate = useNavigate();
 
   const handleDeletePost = () => {
+    if (id && post?.imageId) {
+      deletePost({ postId: id, imageId: post.imageId });
+    } else {
+      console.error('Post ID or Image ID is undefined.');
+    }
+    navigate(-1);
+  };
 
-  }
 
   return (
     <div className="post_details-container">
@@ -51,7 +59,7 @@ const PostDetails = () => {
                 </div>
               </div>
               </Link>
-              <div className="flex-center">
+              <div className="flex-center ">
                 <Link to={`/update-post/${post?.id}`} className={`${user.id !== post?.creator.$id && 'hidden'}`}>
                   <img src="/assets/icons/edit.svg"
                     width={24}

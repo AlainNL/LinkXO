@@ -330,19 +330,23 @@ export async function updatePost(post: IUpdatePost) {
 }
 
 // ============================== DELETE POST
-export async function deletePost(postId: string, imageId: string) {
-  if(!postId || imageId) throw Error;
+export async function deletePost(postId?: string, imageId?: string) {
+  if (!postId || !imageId) return;
 
   try {
-    await databases.deleteDocument(
+    const statusCode = await databases.deleteDocument(
       appwriteConfig.databaseId,
       appwriteConfig.postCollectionId,
       postId
-    )
+    );
 
-    return { status: 'ok' }
+    if (!statusCode) throw Error;
+
+    await deleteFile(imageId);
+
+    return { status: "Ok" };
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 }
 
