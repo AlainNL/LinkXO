@@ -18,7 +18,7 @@ if (appwriteConfig.url) {
 }
 
 //client.setEndpoint(appwriteConfig.url);
-client.setProject(appwriteConfig.projectId);
+//client.setProject(appwriteConfig.projectId);
 
 export const account = new Account(client);
 export const databases = new Databases(client);
