@@ -12,7 +12,7 @@ export const appwriteConfig = {
 const client = new Client();
 
 if (appwriteConfig.url) {
-  client.setEndpoint(appwriteConfig.url).setProject(appwriteConfig.projectId);
+  client.setEndpoint(appwriteConfig.url).setProject('666862670026a10c9522');
 } else {
   console.error('Appwrite URL is not defined.');
 }
